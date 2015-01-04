@@ -32,13 +32,12 @@ class SudokuSolver {
 		if (this.table[row][column] !== 0) {
 			return this.solveNextField(row, column);
 		} else {
-			for (var i = 1; i < 10; i++)
+			for (var i = 1; i < 10; i++) {
 				if (this.addNumber(i, row, column))
 					result = this.solveNextField(row, column);
-
-			if (result === true)
-				return true;
-
+				if (result === true)
+					return true;
+			}
 			this.backTrackField(row, column);
 		}
 	}
