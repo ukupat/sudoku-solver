@@ -10,21 +10,22 @@ var SudokuSolver = (function () {
      * Returns solved table if we were successful
      */
     SudokuSolver.prototype.solve = function () {
-        this.solveSudoku(0, 0);
-        if (this.wasSolved())
+        if (this.solveSudoku(0, 0))
             return this.table;
     };
     /**
      * Recursive function for solving the sudoku with increasing row and column params.
      *
-     * Tries to find a suitable number by looping throw numbers
-     * Ignores filled numbers
-     * Ends when we have reached to the row limit
+     * Using Backtracking algorithm http://en.wikipedia.org/wiki/Backtracking
+     * - Ignores filled numbers
+     * - Tries to find a suitable number by looping through numbers
+     * - Back tracks when suitable number wasn't found
+     * - Ends when we have reached to the row limit: returns true when we were successful
      */
     SudokuSolver.prototype.solveSudoku = function (row, column) {
         var result = false;
         if (row > 8)
-            return true;
+            return this.wasSolved();
         if (this.table[row][column] !== 0) {
             return this.solveNextField(row, column);
         }

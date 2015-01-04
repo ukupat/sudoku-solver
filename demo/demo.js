@@ -137,10 +137,7 @@ var SudokuSolverDemo = (function () {
 		solve: function () {
 			try {
 				var sudokuSolver = new SudokuSolver(this.sudokuTable, this.regions);
-
-				console.time('Sudoku solving took: ');
 				var solution = sudokuSolver.solve();
-				console.timeEnd('Sudoku solving took: ');
 
 				if (solution) {
 					drawBoard(solution);
