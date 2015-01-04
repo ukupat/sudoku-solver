@@ -1,4 +1,6 @@
 body {
+  margin: 0;
+  padding: 0;
   color: #1c140d;
   background: #3d3d3d;
   font-family: 'Roboto', sans-serif; }
@@ -26,6 +28,9 @@ main {
   width: 1200px;
   margin: 0 auto;
   margin-top: 60px; }
+  @media (max-width: 1200px) {
+    main {
+      width: 95%; } }
 
 .board {
   -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -39,6 +44,9 @@ main {
   -moz-border-radius: 3px;
   border-radius: 3px;
   background: #eee; }
+  @media (max-width: 520px) {
+    .board {
+      width: 315px; } }
 
 .region {
   display: inline-block;
@@ -46,6 +54,9 @@ main {
   width: 150px; }
   .region:nth-child(2n) {
     background: #ccc; }
+  @media (max-width: 520px) {
+    .region {
+      width: 105px; } }
   .region .field {
     display: inline-block;
     float: left;
@@ -55,6 +66,12 @@ main {
     padding-top: 15px;
     font-size: 18px;
     text-align: center; }
+    @media (max-width: 520px) {
+      .region .field {
+        width: 35px;
+        height: 35px;
+        padding-top: 7px;
+        font-size: 16px; } }
     .region .field .missing {
       color: #bcbcbc; }
 

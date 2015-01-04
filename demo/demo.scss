@@ -17,6 +17,9 @@
 }
 
 body {
+  margin: 0;
+  padding: 0;
+
   color: #1c140d;
   background: #3d3d3d;
   font-family: 'Roboto', sans-serif;
@@ -51,6 +54,10 @@ main {
   width: 1200px;
   margin: 0 auto;
   margin-top: 60px;
+
+  @media (max-width: 1200px) {
+    width: 95%;
+  }
 }
 
 .board {
@@ -67,6 +74,10 @@ main {
   border-radius: 3px;
 
   background: #eee;
+
+  @media (max-width: 520px) {
+    width: 315px;
+  }
 }
 
 .region {
@@ -76,6 +87,10 @@ main {
 
   &:nth-child(2n) {
     background: #ccc;
+  }
+
+  @media (max-width: 520px) {
+    width: 105px;
   }
 
   .field {
@@ -88,6 +103,13 @@ main {
 
     font-size: 18px;
     text-align: center;
+
+    @media (max-width: 520px) {
+      width: 35px;
+      height: 35px;
+      padding-top: 7px;
+      font-size: 16px;
+    }
 
     .missing {
       color: #bcbcbc;
