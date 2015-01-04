@@ -1,8 +1,30 @@
 {
-	"name": "sudoku-solver",
-	"version": "0.0.1",
-	"authors": [
-		"Uku Pattak <ukupat@gmail.com>"
+	"name": "SudokuSolver",
+	"description": "Solves Sudokus with Backtracking algorithm",
+	"keywords": [
+		"sudoku",
+		"typescript",
+		"backtracking",
+		"solver"
 	],
-	"license": "Apache 2.0"
+	"version": "0.1.0",
+	"homepage": "https://github.com/ukupat/sudoku-solver",
+	"authors": [
+		{
+			"name": "Uku Pattak",
+			"email": "ukupat@gmail.com"
+		}
+	],
+	"license": "Apache 2.0",
+	"main": "./src/sudoku-solver.js",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/ukupat/sudoku-solver.git"
+	},
+	"ignore": [
+		"**/.*",
+		"demo",
+		"index.html",
+		"test"
+	]
 }
