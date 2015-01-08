@@ -1,8 +1,6 @@
 class SudokuSolver {
 
-	regions: Object = {};
-
-	constructor(public table: number[][], public regionPos: number[][]) {}
+	constructor(public table: number[][]) {}
 
 	/**
 	 * Public function for solving the sudoku from the upper left corner
@@ -57,7 +55,7 @@ class SudokuSolver {
 	}
 
 	private addNumber(number: number, row: number, column: number) {
-		if (this.isValidForColumn(number, column) && this.isValidForRow(number, row) && this.isValidForRegion(number, row, column)) {
+		if (this.isValidForColumn(number, column) && this.isValidForRow(number, row) && this.isValidForZone(number, row, column)) {
 			this.table[row][column] = number;
 
 			return true;
@@ -81,23 +79,15 @@ class SudokuSolver {
 		return true;
 	}
 
-	// TODO can be optimised
-	private isValidForRegion(number: number, row: number, column: number): boolean {
-		for (var i = 1; i < 10; i++)
-			this.regions[i] = [];
+	private isValidForZone(number: number, row: number, column: number): boolean {
+		var zoneRow = Math.floor(row / 3) * 3;
+		var zoneColumn = Math.floor(column / 3) * 3;
 
-		this.regions[this.regionPos[row][column]].push(number);
-
-		for (var i = 0; i < 9; i++) {
-			for (var j = 0; j < 9; j++) {
-				if (this.regions[this.regionPos[i][j]].indexOf(this.table[i][j]) !== -1) {
+		for (var i = zoneRow; i < zoneRow + 3; i ++)
+			for (var j = zoneColumn; j < zoneColumn + 3; j ++)
+				if (this.table[i][j] === number)
 					return false;
-				}
-				if (this.table[i][j] !== 0) {
-					this.regions[this.regionPos[i][j]].push(this.table[i][j]);
-				}
-			}
-		}
+
 		return true;
 	}
 
