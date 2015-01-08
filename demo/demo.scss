@@ -99,16 +99,35 @@ main {
     box-sizing: border-box;
     width: 50px;
     height: 50px;
-    padding-top: 15px;
 
+    border: 0;
+    background: none;
+
+    font-family: inherit;
     font-size: 18px;
+    outline: none;
     text-align: center;
 
     @media (max-width: 520px) {
       width: 35px;
       height: 35px;
-      padding-top: 7px;
       font-size: 16px;
+    }
+
+    &:focus::-webkit-input-placeholder {
+      color: transparent;
+    }
+
+    &:focus:-moz-placeholder {
+      color: transparent;
+    }
+
+    &:focus::-moz-placeholder {
+      color: transparent;
+    }
+
+    &:focus:-ms-input-placeholder {
+      color: transparent;
     }
 
     .missing {
@@ -167,26 +186,9 @@ main {
     }
   }
 
-  .file-upload-btn {
-    position: relative;
-    overflow: hidden;
-
-    width: 185px;
-    margin: 10px 0;
+  .reset-btn {
+    margin-left: 10px;
     color: #000;
     background: #666;
-
-    .file-input {
-      position: absolute;
-      top: 0;
-      right: 0;
-      opacity: 0;
-      width: 185px;
-      height: 35px;
-      margin: 0;
-      padding: 0;
-      cursor: pointer;
-      filter: alpha(opacity=0);
-    }
   }
 }

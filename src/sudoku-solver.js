@@ -1,8 +1,6 @@
 var SudokuSolver = (function () {
-    function SudokuSolver(table, regionPos) {
+    function SudokuSolver(table) {
         this.table = table;
-        this.regionPos = regionPos;
-        this.regions = {};
     }
     /**
      * Public function for solving the sudoku from the upper left corner
@@ -52,7 +50,7 @@ var SudokuSolver = (function () {
         this.table[row][column] = 0;
     };
     SudokuSolver.prototype.addNumber = function (number, row, column) {
-        if (this.isValidForColumn(number, column) && this.isValidForRow(number, row) && this.isValidForRegion(number, row, column)) {
+        if (this.isValidForColumn(number, column) && this.isValidForRow(number, row) && this.isValidForZone(number, row, column)) {
             this.table[row][column] = number;
             return true;
         }
@@ -70,21 +68,13 @@ var SudokuSolver = (function () {
                 return false;
         return true;
     };
-    // TODO can be optimised
-    SudokuSolver.prototype.isValidForRegion = function (number, row, column) {
-        for (var i = 1; i < 10; i++)
-            this.regions[i] = [];
-        this.regions[this.regionPos[row][column]].push(number);
-        for (var i = 0; i < 9; i++) {
-            for (var j = 0; j < 9; j++) {
-                if (this.regions[this.regionPos[i][j]].indexOf(this.table[i][j]) !== -1) {
+    SudokuSolver.prototype.isValidForZone = function (number, row, column) {
+        var zoneRow = Math.floor(row / 3) * 3;
+        var zoneColumn = Math.floor(column / 3) * 3;
+        for (var i = zoneRow; i < zoneRow + 3; i++)
+            for (var j = zoneColumn; j < zoneColumn + 3; j++)
+                if (this.table[i][j] === number)
                     return false;
-                }
-                if (this.table[i][j] !== 0) {
-                    this.regions[this.regionPos[i][j]].push(this.table[i][j]);
-                }
-            }
-        }
         return true;
     };
     SudokuSolver.prototype.wasSolved = function () {

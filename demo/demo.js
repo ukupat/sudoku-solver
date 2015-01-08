@@ -4,19 +4,6 @@
 var SudokuSolverDemo = (function () {
 	'use strict';
 
-	function readFile(filePath, field, onLoadCallback) {
-		if (!filePath.files || !filePath.files[0]) {
-			console.error('File is missing -> ' + field);
-			return false;
-		}
-		var reader = new FileReader();
-
-		reader.onload = onLoadCallback;
-		reader.readAsText(filePath.files[0]);
-
-		return true;
-	}
-
 	function parseInput(data) {
 		try {
 			var ret = [];
@@ -45,13 +32,53 @@ var SudokuSolverDemo = (function () {
 	function drawBoard(table) {
 		for (var i = 0; i < 9; i ++) {
 			for (var j = 0; j < 9; j ++) {
-				if (table[i][j] === 0) {
-					document.getElementById('field-' + i + '-' + j).innerHTML = '<span class="missing">?</span>';
-				} else {
-					document.getElementById('field-' + i + '-' + j).innerHTML = table[i][j];
+				if (table[i][j] !== 0) {
+					document.getElementById('field-' + i + '-' + j).value = table[i][j];
 				}
 			}
 		}
+	}
+
+	function addInputListeners() {
+		var inputs = document.getElementsByClassName('field');
+
+		for (var i = 0; i < inputs.length; i ++) {
+			inputs[i].addEventListener('keypress', inputListener);
+		}
+	}
+
+	function inputListener(e) {
+		e.preventDefault();
+
+		if (isValidInput(e)) {
+			this.value = String.fromCharCode(e.which);
+		} else {
+			this.value = '';
+		}
+	}
+
+	function isValidInput(event) {
+		return event.charCode > 48 && event.charCode < 58;
+	}
+
+	function getSudokuTable() {
+		var ret = [];
+		var value;
+
+		for (var i = 0; i < 9; i ++) {
+			ret.push([]);
+
+			for (var j = 0; j < 9; j ++) {
+				value = document.getElementById('field-' + i + '-' + j).value;
+
+				if (value !== '') {
+					ret[i][j] = parseInt(value);
+				} else {
+					ret[i][j] = 0;
+				}
+			}
+		}
+		return ret;
 	}
 
 	function sayJee() {
@@ -73,12 +100,19 @@ var SudokuSolverDemo = (function () {
 		document.getElementById('solve-btn').className = '';
 	}
 
+	function resetBoard() {
+		var inputs = document.getElementsByClassName('field');
+
+		for (var i = 0; i < inputs.length; i ++) {
+			inputs[i].value = '';
+		}
+	}
+
 	return {
 		sudokuTable: [],
-		regions: [],
 
 		init: function () {
-			this.sudokuTable = parseInput(
+			var sudokuTable = parseInput(
 				'- - 5 - 2 - 8 4 -\n' +
 				'8 9 - 7 5 - - - -\n' +
 				'- - 4 - - - 5 - 9\n' +
@@ -89,55 +123,17 @@ var SudokuSolverDemo = (function () {
 				'- - - - 1 6 - 3 4\n' +
 				'- 4 7 - 8 - 9 - -\n'
 			);
-			this.regions = parseInput(
-				'1 1 1 2 2 2 3 3 3\n' +
-				'1 1 1 2 2 2 3 3 3\n' +
-				'1 1 1 2 2 2 3 3 3\n' +
-				'4 4 4 5 5 5 6 6 6\n' +
-				'4 4 4 5 5 5 6 6 6\n' +
-				'4 4 4 5 5 5 6 6 6\n' +
-				'7 7 7 8 8 8 9 9 9\n' +
-				'7 7 7 8 8 8 9 9 9\n' +
-				'7 7 7 8 8 8 9 9 9\n'
-			);
-			drawBoard(this.sudokuTable);
-		},
-
-		readSudokuTable: function (filePath) {
-			var self = this;
-
-			readFile(filePath, 'sudoku table', function (e) {
-				var sudoku = parseInput(e.target.result);
-
-				if (sudoku) {
-					self.sudokuTable = sudoku;
-					drawBoard(self.sudokuTable);
-					resetBtn();
-				} else {
-					sayError();
-				}
-			});
-		},
-
-		readRegions: function (filePath) {
-			var self = this;
-
-			readFile(filePath, 'regions', function (e) {
-				var regions = parseInput(e.target.result);
-
-				if (regions) {
-					self.regions = parseInput(e.target.result);
-					resetBtn();
-				} else {
-					sayError();
-				}
-			});
+			drawBoard(sudokuTable);
+			addInputListeners();
 		},
 
 		solve: function () {
 			try {
-				var sudokuSolver = new SudokuSolver(this.sudokuTable, this.regions);
+				var sudokuSolver = new SudokuSolver(getSudokuTable());
+
+				console.time('Solving sudoku took');
 				var solution = sudokuSolver.solve();
+				console.timeEnd('Solving sudoku took');
 
 				if (solution) {
 					drawBoard(solution);
@@ -149,6 +145,11 @@ var SudokuSolverDemo = (function () {
 				console.error('Something went wrong while solving Sudoku: ' + e.message);
 				sayError();
 			}
+		},
+
+		reset: function () {
+			resetBtn();
+			resetBoard();
 		}
 	};
 }());
