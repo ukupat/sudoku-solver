@@ -16,7 +16,7 @@ bower install sudoku-solver --save
 ````javascript
 
 // Construct SudokuSolver with two-dimensional number array where this.sudoku[row][column]
-var sudokuSolver = new SudokuSolver(this.sudoku, this.regions);
+var sudokuSolver = new SudokuSolver(this.sudoku);
 
 // Returns two-dimensional number array or undefined on failure 
 var solution = sudokuSolver.solve();
